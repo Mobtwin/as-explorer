@@ -13,6 +13,7 @@ if (!fs.existsSync(logFolder)) {
 
 // Define log format
 const logFormat = printf(({ timestamp, level, message }) => {
+  console.log(`${timestamp} - ${level.toUpperCase()} - ${message}`);
   return `${timestamp} - ${level.toUpperCase()} - ${message}`;
 });
 
