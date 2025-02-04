@@ -1728,7 +1728,7 @@ function IOSApp(){
     const url = `${IOS_API}/developers/${devId}`;
     try {
       const response = await doRequest(url);
-      if (response.status === 200) {
+      if (response?.status === 200 || response?.statusText === "OK")  {
         console.info(`Successful response from ${url} :`);
         responseHandler({ devId: id, apps: response.data });
         doneHandler(id);
@@ -1748,9 +1748,9 @@ function IOSApp(){
           }
         }
       }
-    } catch ({ response }) {
-        console.error(`Unexpected status ${response.status} from ${url} :`);
-        handleError(`Unexpected status ${response.status}`);
+    } catch (error) {
+        console.error(`Unexpected status ${error?.response?.status} from ${url} :`+error?.message);
+        handleError(`Unexpected status ${error?.response?.status}`);
     }
   }
   async function oldDevDone(id) {
