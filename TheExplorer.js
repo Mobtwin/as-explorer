@@ -495,7 +495,6 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
     });
 
    setInterval(()=>{
-
     EXPLORERS = null;
     EXPLORERS = [];
     startWorker();
@@ -894,13 +893,13 @@ function steamCorrection(){
 
 
 
-app.use(
-  "/proxy",
-  createProxyMiddleware({
-    target: G_API,
-    changeOrigin: true,
-  })
-);
+// app.use(
+//   "/proxy",
+//   createProxyMiddleware({
+//     target: G_API,
+//     changeOrigin: true,
+//   })
+// );
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));

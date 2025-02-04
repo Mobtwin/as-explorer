@@ -8,7 +8,7 @@ const G_API = process.env.G_API + "/api" ?? "http://localhost:3099/api";
 const IOS_API = process.env.IOS_API + "/api" ?? "http://localhost:3100/api";
 
 let config = {
-  platform: "google_play",
+  platform: "app_store",
   delay: 500,
   new_apps_first: true,
   new_devs_first: true,
@@ -1159,7 +1159,14 @@ function IOSApp(){
         console.info("new app saved success");
         if(app.ask)askForSimilarApps(app.id)
     })
-    .catch((err) => console.error("new app failed on save :" + err));
+    .catch((err) => {
+      if (err.message.includes("E11000 duplicate key")) {
+        updateApp(app);
+      } else {
+        console.error("new app failed on save :" + err);
+        console.error(JSON.stringify(app));
+      }
+    });
   }
 
   async function oldAppDone(id) {
