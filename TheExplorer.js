@@ -969,6 +969,6 @@ app.post("/update", async (req, res) => {
   updateWorkersConfig(configUpdates);
 });
 
-app.listen(4010, () => {
-  console.log("server listen to port 4001");
+app.listen(process.env.PORT||8080, () => {
+  console.log("server listen to port "+process.env.PORT||8080);
 });
