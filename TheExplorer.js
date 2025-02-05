@@ -533,9 +533,10 @@ let Config = config;
     // startTopChartWorker();
     loadIds(() => {
       startWorker();
-      // startWorker();
-      // startWorker();
-      // startWorker();
+      startWorker();
+      startWorker();
+      startWorker();
+      startWorker();
     });
 
   //  setInterval(()=>{
