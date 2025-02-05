@@ -398,13 +398,16 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
     total_dev_at_the_line: 0,
     total_workers: 0,
     start_at: new Date(),
-  };
+};
+let Config = config;
+  const BATCH_SIZE = Config?.batch_size || 10000;
+  let page = Config?.app_page || 0;
+  let devPage = Config?.dev_page || 0;
   let similarAppsWorkerIndexHandler = 0;
   // storage for all workers instances
   let EXPLORERS = [];
   const TOP_CHARTS_EXPLORERS = [];
   // config
-  let Config = config;
   addProxies(v4proxies, v6proxies).then(setupTheExplorer);
 
   // health check
@@ -415,7 +418,77 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
     console.log("STATS : ", STATS);
   }, 1000 * 60 * 2);
 
+  const processApp = (app,today,alreadyUpdated,needToBeUpdated) => {
+    console.log("processing app : ", app._id);
+    if (app.updated_at != undefined && app.updated_at > today) {
+      alreadyUpdated++;
+      STORAGE.APPS_IDS.set(app._id, { value: true, onProcess: false });
+    } else {
+      STORAGE.APPS_IDS.set(app._id, {
+        value: false,
+        onProcess: false,
+      });
+      needToBeUpdated++;
+    }
+  }
+  async function fetchAppsBatch(today,alreadyUpdated,needToBeUpdated) {
+    console.log("applying config scan apps: "+Config.scan_apps);
+    if(!Config.scan_apps) return true;
+    console.log("we are in " + page*BATCH_SIZE)
+    const apps = await Ios_Apps.find()
+    .select("_id updated_at")
+      .skip(page * BATCH_SIZE)
+      .limit(BATCH_SIZE)
+      .lean(); // Converts Mongoose documents to plain objects (less memory usage)
 
+    if (apps.length === 0) {
+      console.log("✅ Finished processing all apps.");
+      return true;
+    }
+
+    for (const app of apps) {
+      processApp(app,today,alreadyUpdated,needToBeUpdated);
+    }
+
+    page++;
+    await fetchAppsBatch(); // Prevents blocking the event loop
+  }
+  const processDev = (dev,today) => {
+    console.log("processing dev : ", dev._id);
+    if (dev.updated_at && dev.updated_at > today) {
+      STORAGE.DEVS_IDS.set(dev._id, {
+        value: true,
+        onProcess: false,
+      });
+    } else {
+      STORAGE.DEVS_IDS.set(dev._id, {
+        value: false,
+        onProcess: false,
+      });
+    }
+  }
+  async function fetchDevsBatch(today) {
+    console.log("applying config scan devs: "+Config.scan_devs);
+    if(!Config.scan_devs) return true;
+    console.log("we are in " + devPage*BATCH_SIZE)
+    const devs = await Ios_DEVs.find()
+    .select("_id updated_at")
+      .skip(devPage * BATCH_SIZE)
+      .limit(BATCH_SIZE)
+      .lean(); // Converts Mongoose documents to plain objects (less memory usage)
+
+    if (devs.length === 0) {
+      console.log("✅ Finished processing all devs.");
+      return true;
+    }
+
+    for (const dev of devs) {
+      processDev(dev,today);
+    }
+
+    devPage++;
+    await fetchDevsBatch(); // Prevents blocking the event loop
+  }
   // load ids from the database
   async function loadIds(callback) {
     const today = new Date();
@@ -423,41 +496,12 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
     today.setDate(today.getDate() - 7);
     let alreadyUpdated = 0;
     let needToBeUpdated = 0;
-
-    Ios_Apps.find()
-      .select("_id updated_at description")
-      .cursor()
-      .eachAsync((app, i) => {
-        if ( app.updated_at && app.description && new Date(app.updated_at) > today) {
-          alreadyUpdated++;
-          STORAGE.APPS_IDS.set(app.id, { value: true, onProcess: false });
-        } else {
-          needToBeUpdated++;
-          STORAGE.APPS_IDS.set(app.id, {
-            value: false,
-            onProcess: false,
-          });
-        }
-      })
+    fetchAppsBatch(today,alreadyUpdated,needToBeUpdated)
       .then(() => {
         console.info("alreadyUpdated : ", alreadyUpdated);
         console.info("needToBeUpdated : ", needToBeUpdated);
         console.info("loading app store apps ids : finish successfully");
-        Ios_DEVs.find()
-          .cursor()
-          .eachAsync((dev, i) => {
-            if (dev.updated_at && dev.updated_at > today) {
-              STORAGE.DEVS_IDS.set(dev.id, {
-                value: true,
-                onProcess: false,
-              });
-            } else {
-              STORAGE.DEVS_IDS.set(dev.id, {
-                value: false,
-                onProcess: false,
-              });
-            }
-          })
+        fetchDevsBatch(today)
           .then(() => {
             console.info("loading app store Dev's ids : finish successfully");
             callback();
@@ -486,22 +530,22 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
     //     }
     //   }
     // })
-    startTopChartWorker();
+    // startTopChartWorker();
     loadIds(() => {
       startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
+      // startWorker();
+      // startWorker();
+      // startWorker();
     });
 
-   setInterval(()=>{
-    EXPLORERS = null;
-    EXPLORERS = [];
-    startWorker();
-    startWorker();
-    startWorker();
-    startWorker();
-    }, 120*60*1000)
+  //  setInterval(()=>{
+  //   EXPLORERS = null;
+  //   EXPLORERS = [];
+  //   startWorker();
+  //   startWorker();
+  //   startWorker();
+  //   startWorker();
+  //   }, 120*60*1000)
   }
 
   // add proxies to the scraper api

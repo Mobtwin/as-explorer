@@ -1034,14 +1034,12 @@ function IOSApp(){
     try {
       const response = await doRequest(url);
       if (response.status === 200) {
-        console.info(`Successful response from ${url} :`);
         responseHandler(response.data);
         doneHandler(id);
         await sleep(config.delay);
         askForApp();
       } else {
         if (response.status === 400) {
-          console.warn(`Empty response from ${url} :`, response.data.message);
           if(response.data.message.includes("not found")){
             responseHandler(id);
             doneHandler(id);
@@ -1156,7 +1154,7 @@ function IOSApp(){
       updated_at: new Date(),  
     })
     .then((dbApp) => {
-        console.info("new app saved success");
+        console.info(`new app: ${dbApp._id} saved success`);
         if(app.ask)askForSimilarApps(app.id)
     })
     .catch((err) => {
@@ -1207,7 +1205,6 @@ function IOSApp(){
     try {
       const response = await doRequest(url);
       if (response.status === 200) {
-        console.info(`Successful response from ${url} :`);
         Ios_Apps.updateOne(
           { _id: id },
           { $set: { similarApps: response.data.data.map((app) => app.appId) } }
@@ -1685,7 +1682,7 @@ function IOSApp(){
         $position: 0
       }
     }})
-      .then((res) => console.info("old app updated success"))
+      .then((res) => console.info(`old app: ${dbApp._id} updated successfully`))
       .catch((err) =>
         console.error("save on db : updated old app  ERROR : " + err)
       );
@@ -1695,7 +1692,7 @@ function IOSApp(){
 
   // dev
   async function askForDev() {
-    console.info("wev asked about a developer");
+    console.info("Asking for a developer");
     parentPort.postMessage({
       key: "ask_for_dev",
     });
@@ -1729,14 +1726,12 @@ function IOSApp(){
     try {
       const response = await doRequest(url);
       if (response?.status === 200 || response?.statusText === "OK")  {
-        console.info(`Successful response from ${url} :`);
         responseHandler({ devId: id, apps: response.data });
         doneHandler(id);
         await sleep(config.delay);
         askForDev();
       }else{
         if (response?.status === 400) {
-          console.warn(`Empty response from ${url} :`, response.data.message);
           if(response.data.message.includes("not found")){
             responseHandler(id);
             doneHandler(id);
