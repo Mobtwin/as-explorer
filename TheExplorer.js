@@ -13,9 +13,41 @@ dotenv.config();
 // initial the web server
 const app = express();
 
-const G_API = process.env.G_API;
 const IOS_API = process.env.IOS_API;
-
+let similarAppsWorkerIndexHandler = 0;
+const STORAGE = {
+  APPS_IDS: new Map(),
+  NEW_APPS_IDS: new Map(),
+  URGENT_APPS_IDS: new Map(),
+  DEVS_IDS: new Map(),
+  NEW_DEVS_IDS: new Map(),
+};
+let CONFIG = {
+  platform: "app_store",
+  delay: 500,
+  new_apps_first: true,
+  new_devs_first: true,
+  scan_devs: true,
+  timeline: true,
+  default_workers: 3
+};
+const STATS = {
+  total_apps_loaded: 0,
+  total_db_apps_scanned: 0,
+  total_apps_explored: 0,
+  total_apps_saved: 0,
+  total_apps_at_the_line: 0,
+  total_dev_loaded: 0,
+  total_db_devs_scanned: 0,
+  total_devs_explored: 0,
+  total_devs_saved: 0,
+  total_dev_at_the_line: 0,
+  total_workers: 0,
+  start_at: new Date(),
+};
+// storage for all workers instances
+let EXPLORERS = [];
+const TOP_CHARTS_EXPLORERS = [];
 //establish connection with mongodb
 connectToMongoDb(loadingConfig);
 
@@ -30,393 +62,18 @@ async function loadingConfig() {
   // steamCorrection();
 }
 
-function googlePlayExplorer(config, proxies) {
-  const STORAGE = {
-    APPS_IDS: new Map(),
-    NEW_APPS_IDS: new Map(),
-    URGENT_APPS_IDS: new Map(),
-    DEVS_IDS: new Map(),
-    NEW_DEVS_IDS: new Map(),
-  };
-  const STATS = {
-    total_apps_loaded: 0,
-    total_db_apps_scanned: 0,
-    total_apps_explored: 0,
-    total_apps_saved: 0,
-    total_apps_at_the_line: 0,
-    total_dev_loaded: 0,
-    total_db_devs_scanned: 0,
-    total_devs_explored: 0,
-    total_devs_saved: 0,
-    total_dev_at_the_line: 0,
-    total_workers: 0,
-    start_at: new Date(),
-  };
-  // storage for all workers instances
-  let EXPLORERS = [];
-  const TOP_CHARTS_EXPLORERS = [];
-  // config
-  let Config = config;
-  addProxies(proxies).then(setupTheExplorer);
-
-  // load ids from the database
-  async function loadIds(callback) {
-    const today = new Date();
-    today.setDate(today.getDate() - 7);
-    let alreadyUpdated = 0;
-    let needToBeUpdated = 0;
-    today.setHours(0,0);
-
-    G_Apps.find()
-      .select(
-        "_id released updated_at published country countries earlyAccessEnabled "
-      )
-      .cursor()
-      .eachAsync((app, i) => {
-        if (app.updated_at != undefined && app.updated_at > today) {
-          alreadyUpdated++;
-          STORAGE.APPS_IDS.set(app.id, { value: true, onProcess: false });
-        } else {
-          STORAGE.APPS_IDS.set(app.id, {
-            value: false,
-            onProcess: false,
-          });
-          needToBeUpdated++;
-        }
-      })
-      .then(() => {
-        logger.info("alreadyUpdated : "+ alreadyUpdated);
-        logger.info("needToBeUpdated : "+ needToBeUpdated);
-        logger.info("loading google play apps ids : finish successfully");
-        needToBeUpdated = 0;
-        alreadyUpdated = 0;
-        G_DEVs.find("_id updated_at")
-          .cursor()
-          .eachAsync((dev, i) => {
-            if (dev.updated_at && dev.updated_at > today) {
-                STORAGE.DEVS_IDS.set(dev.id, {
-                  value: true,
-                  onProcess: false
-                });
-                alreadyUpdated++;
-            } else {
-              STORAGE.DEVS_IDS.set(dev.id, {
-                value: false,
-                onProcess: false,
-              });
-              needToBeUpdated++;
-            }
-          })
-          .then(() => {
-            logger.info("alreadyUpdated : "+ alreadyUpdated);
-            logger.info("needToBeUpdated : "+ needToBeUpdated);
-            logger.info("loading google play Dev's ids : finish successfully");
-            callback();
-          });
-      })
-      .catch((err) => {
-        console.error("loading google play ids : ", err);
-      });
-  }
-
-  // setup the explorer
-  function setupTheExplorer() {
-    // startTopChartWorker();
-    loadIds(() => {
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-    });
-  }
-
-  // setup and execute a worker
-  async function startWorker() {
-    const worker = new Worker("./worker.js");
-    EXPLORERS.push(worker);
-
-    worker.on("message", (message) => {
-      switch (message.key) {
-        case "setup":
-          worker.postMessage({
-            key: "setup",
-            data: {
-              ...Config,
-              platform: "google_play",
-            },
-          });
-          break;
-        // app
-        case "ask_for_app":
-          if (EXPLORERS.indexOf(worker) !== -1) {
-            let stillNewApps = false;
-            if (
-              STORAGE.NEW_APPS_IDS.size > 0 &&
-              Config.new_apps_first
-            ) {
-              for (const [key, val] of STORAGE.NEW_APPS_IDS) {
-                if (!val.value && !val.onProcess) {
-                  STORAGE.NEW_APPS_IDS.set(key, {
-                    value: false,
-                    onProcess: true,
-                  });
-                  worker.postMessage({
-                    key: "new_app",
-                    data: { value: key },
-                  });
-                  stillNewApps = true;
-                  break;
-                }
-              }
-            }
-            //!stillNewApps
-            if (!stillNewApps) {
-              for (const [key, val] of STORAGE.APPS_IDS) {
-                if (!val.value && !val.onProcess) {
-                  STORAGE.APPS_IDS.set(key, {
-                    value: false,
-                    onProcess: true,
-                  });
-                  worker.postMessage({
-                    key: "old_app",
-                    data: { value: key },
-                  });
-                  break;
-                }
-              }
-            }
-          } else {
-            worker.terminate();
-          }
-          break;
-
-        case "old_app_done":
-          STATS.total_db_apps_scanned++;
-          STORAGE.APPS_IDS.set(message.data, {
-            value: true,
-            onProcess: false,
-          });
-          break;
-
-        case "new_app_done":
-          STATS.total_apps_saved++;
-          STORAGE.NEW_APPS_IDS.set(message.data, {
-            value: true,
-            onProcess: false,
-          });
-          break;
-
-        // dev
-        case "ask_for_dev":
-          if (EXPLORERS.indexOf(worker) !== -1) {
-            let stillNewDevs = false;
-            if (STORAGE.NEW_DEVS_IDS.size > 0 && Config.new_devs_first) {
-              for (const [key, val] of STORAGE.NEW_DEVS_IDS) {
-                if (!val.value && !val.onProcess) {
-                  STORAGE.NEW_DEVS_IDS.set(key, {
-                    value: false,
-                    onProcess: true,
-                  });
-                  worker.postMessage({
-                    key: "new_dev",
-                    data: key,
-                  });
-                  stillNewDevs = true;
-                  break;
-                }
-              }
-            }
-            if (!stillNewDevs) {
-              for (const [key, val] of STORAGE.DEVS_IDS) {
-                if (!val.value && !val.onProcess) {
-                  STORAGE.DEVS_IDS.set(key, {
-                    value: false,
-                    onProcess: true,
-                  });
-                  worker.postMessage({
-                    key: "old_dev",
-                    data: key,
-                  });
-                  break;
-                }
-              }
-            }
-          } else {
-            worker.terminate();
-          }
-
-          break;
-
-        case "old_dev_done":
-          STATS.total_db_devs_scanned++;
-          STORAGE.DEVS_IDS.set(message.data, {
-            value: true,
-            onProcess: false,
-          });
-          break;
-
-        case "new_dev_done":
-          STATS.total_devs_saved++;
-          STORAGE.NEW_DEVS_IDS.set(message.data, {
-            value: true,
-            onProcess: false,
-          });
-          break;
-
-        case "the_app_line_verification":
-          theAppLineVerification(message.data);
-          break;
-
-        case "the_dev_line_verification":
-          theDevLineVerification(message.data);
-          break;
-      }
-    });
-
-    worker.on("error", (err)=>{
-      console.log(err);
-      worker.terminate();
-    })
-
-    worker.on("exit", (code) => {
-      console.log(`Worker stopped with exit code ${code}`);
-      const workerIndex = EXPLORERS.indexOf(worker);
-      if (workerIndex !== -1) {
-        EXPLORERS.splice(workerIndex, 1);
-        setTimeout(() => {
-          startWorker();
-        }, 1000 * 6);
-      }
-    });
-  }
-
-  // setup and execute a top chart worker
-  async function startTopChartWorker() {
-    const worker = new Worker("./topChartsWorker.js");
-    TOP_CHARTS_EXPLORERS.push(worker);
-    worker.on("message", (message) => {
-      switch (message.key) {
-        case "setup":
-          worker.postMessage({
-            key: "setup",
-            data: {
-              ...Config,
-              platform: "google_play",
-            },
-          });
-          break;
-      }
-    });
-  }
-  
-  // send the proxies to the scraper api
-  async function addProxies(dbProxies) {
-    const proxies = [];
-    dbProxies.forEach((proxy) => {
-      proxies.push(
-        `${proxy.host}:${proxy.port}:${proxy.username}:${proxy.password}`
-      );
-    });
-    await fetch(`${G_API}/proxy/add`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ proxies }),
-    })
-      .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => {
-        console.error(
-          "failed to setup proxies for google play api ",
-          err.message
-        );
-        throw err;
-      });
-  }
-  async function theAppLineVerification(ids) {
-    ids.forEach((id) => {
-      if (
-        !STORAGE.APPS_IDS.has(id) &&
-        !STORAGE.NEW_APPS_IDS.has(id) &&
-        !STORAGE.URGENT_APPS_IDS.has(id)
-      ) {
-        STATS.total_apps_explored++;
-        STORAGE.NEW_APPS_IDS.set(id, {
-          value: false,
-          onProcess: false,
-        });
-      }
-    });
-  }
-  async function theDevLineVerification(dev) {
-    if (
-      !STORAGE.DEVS_IDS.has(dev) &&
-      !STORAGE.NEW_DEVS_IDS.has(dev)
-    ) {
-      STATS.total_devs_explored++;
-      STORAGE.NEW_DEVS_IDS.set(dev, {
-        value: false,
-        onProcess: false,
-      });
-    }
-  }
-  const updateConfig = async (updates) => {
-    Config = { ...Config, ...updates };
-    EXPLORERS.forEach((worker) => {
-      worker.postMessage({
-        key: "config",
-        data: updates,
-      });
-    });
-  };
-  return { updateConfig };
-}
 
 function appStoreExplorer(config, v4proxies, v6proxies) {
-  const STORAGE = {
-    APPS_IDS: new Map(),
-    NEW_APPS_IDS: new Map(),
-    URGENT_APPS_IDS: new Map(),
-    DEVS_IDS: new Map(),
-    NEW_DEVS_IDS: new Map(),
-  };
-  const STATS = {
-    total_apps_loaded: 0,
-    total_db_apps_scanned: 0,
-    total_apps_explored: 0,
-    total_apps_saved: 0,
-    total_apps_at_the_line: 0,
-    total_dev_loaded: 0,
-    total_db_devs_scanned: 0,
-    total_devs_explored: 0,
-    total_devs_saved: 0,
-    total_dev_at_the_line: 0,
-    total_workers: 0,
-    start_at: new Date(),
-};
-let Config = config;
-  const BATCH_SIZE = Config?.batch_size || 10000;
-  let page = Config?.app_page || 0;
-  let devPage = Config?.dev_page || 0;
-  let similarAppsWorkerIndexHandler = 0;
-  // storage for all workers instances
-  let EXPLORERS = [];
-  const TOP_CHARTS_EXPLORERS = [];
+//   
+  CONFIG = {...CONFIG,...config};
+  const BATCH_SIZE = CONFIG?.batch_size || 10000;
+  let page = CONFIG?.app_page || 0;
+  let devPage = CONFIG?.dev_page || 0;
+
   // config
   addProxies(v4proxies, v6proxies).then(setupTheExplorer);
 
-  // health check
-  setInterval(() => {
-    console.log("explorers : ", EXPLORERS.length);
-    console.log("top chart worker : ", TOP_CHARTS_EXPLORERS.length);
-    console.log("time : ", new Date());
-    console.log("STATS : ", STATS);
-  }, 1000 * 60 * 2);
+
 
   const processApp = (app,today,alreadyUpdated,needToBeUpdated) => {
     console.log("processing app : ", app._id);
@@ -432,8 +89,8 @@ let Config = config;
     }
   }
   async function fetchAppsBatch(today,alreadyUpdated,needToBeUpdated) {
-    console.log("applying config scan apps: "+Config.scan_apps);
-    if(!Config.scan_apps) return true;
+    console.log("applying config scan apps: "+CONFIG.scan_apps);
+    if(!CONFIG.scan_apps) return true;
     console.log("we are in " + page*BATCH_SIZE)
     const apps = await Ios_Apps.find()
     .select("_id updated_at")
@@ -441,7 +98,7 @@ let Config = config;
       .limit(BATCH_SIZE)
       .lean(); // Converts Mongoose documents to plain objects (less memory usage)
 
-    if (apps.length === 0) {
+    if (apps.length === 0 || page > 100) {
       console.log("✅ Finished processing all apps.");
       return true;
     }
@@ -468,8 +125,8 @@ let Config = config;
     }
   }
   async function fetchDevsBatch(today) {
-    console.log("applying config scan devs: "+Config.scan_devs);
-    if(!Config.scan_devs) return true;
+    console.log("applying config scan devs: "+CONFIG.scan_devs);
+    if(!CONFIG.scan_devs) return true;
     console.log("we are in " + devPage*BATCH_SIZE)
     const devs = await Ios_DEVs.find()
     .select("_id updated_at")
@@ -514,39 +171,13 @@ let Config = config;
 
   // setup the explorer
   function setupTheExplorer() {
-    // let counter = 0;
-    // let games = 0;
-    // let apps = 0;
-    // Ios_Apps.find("categories type description categories primaryCategory").skip().cursor().eachAsync((app, i) => {
-    //   if(app.description && app.categories && app.primaryCategory && app.categories.length > 0){
-    //     app.type = (app.categories.find(category=>category?.toLowerCase().includes("game")) || app.primaryCategory.toLocaleLowerCase().includes("game")) ? "GAME" : "APP"
-    //     app.type === "GAME" ? games++ : apps++;
-    //     app.save().then().catch((err) => console.log(err.message))
-    //     counter++;
-    //     if(counter % 1000 === 0){
-    //       console.log(counter);
-    //       console.log("games : ", games);
-    //       console.log("apps : ", apps);
-    //     }
-    //   }
-    // })
     // startTopChartWorker();
-    loadIds(() => {
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
-      startWorker();
+    loadIds(async() => {
+      for (let i = 0; i < CONFIG.default_workers; i++) {
+        await startWorker();
+      }
     });
 
-  //  setInterval(()=>{
-  //   EXPLORERS = null;
-  //   EXPLORERS = [];
-  //   startWorker();
-  //   startWorker();
-  //   startWorker();
-  //   startWorker();
-  //   }, 120*60*1000)
   }
 
   // add proxies to the scraper api
@@ -589,7 +220,7 @@ let Config = config;
           worker.postMessage({
             key: "setup",
             data: {
-              ...Config,
+              ...CONFIG,
               platform: "app_store",
             },
           });
@@ -599,7 +230,7 @@ let Config = config;
           if (EXPLORERS.indexOf(worker) !== -1) {
             let stillNewApps = false;
 
-            if (STORAGE.URGENT_APPS_IDS.size > 0 && Config.new_apps_first) {
+            if (STORAGE.URGENT_APPS_IDS.size > 0 && CONFIG.new_apps_first) {
               for (const [key, val] of STORAGE.URGENT_APPS_IDS) {
                 if (!val.value && !val.onProcess) {
                   STORAGE.URGENT_APPS_IDS.set(key, {
@@ -621,7 +252,7 @@ let Config = config;
             //NEW_APPS_IDS.size > 0
             if (
               STORAGE.NEW_APPS_IDS.size > 0 &&
-              Config.new_apps_first &&
+              CONFIG.new_apps_first &&
               !stillNewApps
             ) {
               for (const [key, val] of STORAGE.NEW_APPS_IDS) {
@@ -680,7 +311,7 @@ let Config = config;
         case "ask_for_dev":
           if (EXPLORERS.indexOf(worker) !== -1) {
             let stillNewDevs = false;
-            if (STORAGE.NEW_DEVS_IDS.size > 0 && Config.new_devs_first) {
+            if (STORAGE.NEW_DEVS_IDS.size > 0 && CONFIG.new_devs_first) {
               for (const [key, val] of STORAGE.NEW_DEVS_IDS) {
                 if (!val.value && !val.onProcess) {
                   STORAGE.NEW_DEVS_IDS.set(key, {
@@ -771,7 +402,7 @@ let Config = config;
           worker.postMessage({
             key: "setup",
             data: {
-              ...Config,
+              ...CONFIG,
               platform: "app_store",
             },
           });
@@ -839,7 +470,7 @@ let Config = config;
   }
 
   const updateConfig = async (updates) => {
-    Config = { ...Config, ...updates };
+    Config = { ...CONFIG, ...updates };
     EXPLORERS.forEach((worker) => {
       worker.postMessage({
         key: "config",
@@ -936,41 +567,277 @@ function steamCorrection(){
   })
 }
 
+async function updateConfig(updates) {
+  let Config = { ...CONFIG, ...updates };
+  EXPLORERS.forEach((worker) => {
+    worker.postMessage({
+      key: "config",
+      data: updates,
+    });
+  });
+};
+async function theAppLineVerification(apps) {
+  for (let i = 0; i < apps.length; i++) {
+    const app = apps[i];
+    similarAppsWorkerIndexHandler =
+      (similarAppsWorkerIndexHandler + 1) % EXPLORERS.length;
+    const id = app.id.toString();
+    if (STORAGE.APPS_IDS.has(id)) {
+      const state = STORAGE.APPS_IDS.get(id);
+      if (!state.value && !state.onProcess) {
+        STATS.total_db_apps_scanned++;
+        STORAGE.APPS_IDS.set(id, {
+          value: true,
+          onProcess: false,
+        });
+        EXPLORERS[similarAppsWorkerIndexHandler]?.postMessage({
+          key: "update_app",
+          data: app,
+        });
+      }
+    } else {
+      STATS.total_apps_explored++;
+      STORAGE.APPS_IDS.set(id, {
+        value: true,
+        onProcess: false,
+      });
+      EXPLORERS[similarAppsWorkerIndexHandler].postMessage({
+        key: "create_app",
+        data: app,
+      });
+    }
+    const devId = app.developerId.toString();
+    if (
+      !STORAGE.DEVS_IDS.has(`${devId}`) &&
+      !STORAGE.NEW_DEVS_IDS.has(`${devId}`)
+    ) {
+      STATS.total_devs_explored++;
+      STORAGE.NEW_DEVS_IDS.set(devId, {
+        value: false,
+        onProcess: false,
+      });
+    }
+  }
+}
 
+async function theDevLineVerification(dev) {
+  const devId = dev.toString();
+  if (
+    !STORAGE.DEVS_IDS.has(`${devId}`) &&
+    !STORAGE.NEW_DEVS_IDS.has(`${devId}`)
+  ) {
+    STATS.total_devs_explored++;
+    STORAGE.NEW_DEVS_IDS.set(devId, {
+      value: false,
+      onProcess: false,
+    });
+  }
+}
+// setup and execute a worker
+async function startWorker() {
+  const worker = new Worker("./worker.js");
+  EXPLORERS.push(worker);
 
-// app.use(
-//   "/proxy",
-//   createProxyMiddleware({
-//     target: G_API,
-//     changeOrigin: true,
-//   })
-// );
+  worker.on("message", (message) => {
+    switch (message.key) {
+      case "setup":
+        worker.postMessage({
+          key: "setup",
+          data: {
+            ...CONFIG,
+            platform: "app_store",
+          },
+        });
+        break;
+      // app
+      case "ask_for_app":
+        if (EXPLORERS.indexOf(worker) !== -1) {
+          let stillNewApps = false;
 
+          if (STORAGE.URGENT_APPS_IDS.size > 0 && CONFIG.new_apps_first) {
+            for (const [key, val] of STORAGE.URGENT_APPS_IDS) {
+              if (!val.value && !val.onProcess) {
+                STORAGE.URGENT_APPS_IDS.set(key, {
+                  value: false,
+                  onProcess: true,
+                });
+                worker.postMessage({
+                  key: "old_app",
+                  data: {
+                    value: key,
+                    country: STORAGE.URGENT_APPS_IDS.get(key).country,
+                  },
+                });
+                stillNewApps = true;
+                break;
+              }
+            }
+          }
+          //NEW_APPS_IDS.size > 0
+          if (
+            STORAGE.NEW_APPS_IDS.size > 0 &&
+            CONFIG.new_apps_first &&
+            !stillNewApps
+          ) {
+            for (const [key, val] of STORAGE.NEW_APPS_IDS) {
+              if (!val.value && !val.onProcess) {
+                STORAGE.NEW_APPS_IDS.set(key, {
+                  value: false,
+                  onProcess: true,
+                });
+                worker.postMessage({
+                  key: "new_app",
+                  data: { value: key },
+                });
+                stillNewApps = true;
+                break;
+              }
+            }
+          }
+          //!stillNewApps
+          if (!stillNewApps) {
+            for (const [key, val] of STORAGE.APPS_IDS) {
+              if (!val.value && !val.onProcess) {
+                STORAGE.APPS_IDS.set(key, {
+                  value: false,
+                  onProcess: true,
+                });
+                worker.postMessage({
+                  key: "old_app",
+                  data: { value: key },
+                });
+                break;
+              }
+            }
+          }
+        } else {
+          worker.terminate();
+        }
+        break;
+
+      case "old_app_done":
+        STATS.total_db_apps_scanned++;
+        STORAGE.APPS_IDS.set(message.data, {
+          value: true,
+          onProcess: false,
+        });
+        break;
+
+      case "new_app_done":
+        STATS.total_apps_saved++;
+        STORAGE.APPS_IDS.set(message.data, {
+          value: true,
+          onProcess: false,
+        });
+        break;
+
+      // dev
+      case "ask_for_dev":
+        if (EXPLORERS.indexOf(worker) !== -1) {
+          let stillNewDevs = false;
+          if (STORAGE.NEW_DEVS_IDS.size > 0 && CONFIG.new_devs_first) {
+            for (const [key, val] of STORAGE.NEW_DEVS_IDS) {
+              if (!val.value && !val.onProcess) {
+                STORAGE.NEW_DEVS_IDS.set(key, {
+                  value: false,
+                  onProcess: true,
+                });
+                worker.postMessage({
+                  key: "new_dev",
+                  data: key,
+                });
+                stillNewDevs = true;
+                break;
+              }
+            }
+          }
+          if (!stillNewDevs) {
+            for (const [key, val] of STORAGE.DEVS_IDS) {
+              if (!val.value && !val.onProcess) {
+                STORAGE.DEVS_IDS.set(key, {
+                  value: false,
+                  onProcess: true,
+                });
+                worker.postMessage({
+                  key: "old_dev",
+                  data: key,
+                });
+                break;
+              }
+            }
+          }
+        } else {
+          worker.terminate();
+        }
+
+        break;
+
+      case "old_dev_done":
+        STATS.total_db_devs_scanned++;
+        STORAGE.DEVS_IDS.set(message.data, {
+          value: true,
+          onProcess: false,
+        });
+        break;
+
+      case "new_dev_done":
+        STATS.total_devs_saved++;
+        STORAGE.NEW_DEVS_IDS.set(message.data, {
+          value: true,
+          onProcess: false,
+        });
+        break;
+
+      case "the_app_line_verification":
+        theAppLineVerification(message.data);
+        break;
+
+      case "the_dev_line_verification":
+        theDevLineVerification(message.data);
+        break;
+    }
+  });
+
+  worker.on("error", (err)=>{
+    console.error(err);
+    worker.terminate();
+  })
+
+  worker.on("exit", (code) => {
+    console.log(`Worker stopped with exit code ${code}`);
+    const workerIndex = EXPLORERS.indexOf(worker);
+    if (workerIndex !== -1) {
+      EXPLORERS.splice(workerIndex, 1);
+      setTimeout(() => {
+        startWorker();
+      }, 1000 * 6);
+    }
+  });
+}
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 app.get("/status", (req, res) => {
-  const status = expl.length ? true : false;
+  const status = EXPLORERS.length > 0 || TOP_CHARTS_EXPLORERS.length > 0 ? true : false;
   res.json({
     status,
-    total_apps_loaded: APPS_IDS.size,
-    total_db_apps_scanned: total_db_apps_scanned,
-    total_apps_explored: total_apps_explored,
-    total_apps_saved: total_apps_saved,
-    total_apps_at_the_line: NEW_APPS_IDS.size,
-    total_dev_loaded: DEVS_IDS.size,
-    total_db_devs_scanned,
-    total_devs_explored: total_devs_explored,
-    total_devs_saved: total_devs_saved,
-    total_dev_at_the_line: NEW_DEVS_IDS.size,
-    total_workers: Explorers.length,
-    new_apps_first: globalConfig.new_apps_first,
-    new_devs_first: globalConfig.new_devs_first,
-    gp_top_chart_worker: GP_Top_Chart_Worker ? true : false,
-    as_top_chart_worker: AS_Top_Chart_Worker ? true : false,
-    delay: globalConfig.delay,
-    timeline: globalConfig.timeline,
+    total_apps_loaded: STORAGE.APPS_IDS.size,
+    total_db_apps_scanned: STATS.total_db_apps_scanned,
+    total_apps_explored: STATS.total_apps_explored,
+    total_apps_saved: STATS.total_apps_saved,
+    total_apps_at_the_line: STORAGE.NEW_APPS_IDS.size,
+    total_dev_loaded: STORAGE.DEVS_IDS.size,
+    total_db_devs_scanned:STATS.total_db_devs_scanned,
+    total_devs_explored: STATS.total_devs_explored,
+    total_devs_saved: STATS.total_devs_saved,
+    total_dev_at_the_line: STORAGE.NEW_DEVS_IDS.size,
+    total_workers: EXPLORERS.length,
+    new_apps_first: CONFIG.new_apps_first,
+    new_devs_first: CONFIG.new_devs_first,
+    as_top_chart_worker: TOP_CHARTS_EXPLORERS.length > 0 ? true : false,
+    delay: CONFIG.delay,
+    timeline: CONFIG.timeline,
     time: new Date(),
-    start_at: START_AT,
+    start_at: STATS.start_at,
   });
 });
 
@@ -978,24 +845,24 @@ app.post("/update", async (req, res) => {
   if (req.body.workers) {
     const newTotalWorkers = parseInt(req.body.workers, 10);
     if (typeof newTotalWorkers === "number" && newTotalWorkers >= 0) {
-      if (newTotalWorkers < Explorers.length) {
-        Explorers = Explorers.splice(0, newTotalWorkers);
-        res.json({ count: Explorers.length });
+      if (newTotalWorkers < EXPLORERS.length) {
+        EXPLORERS = EXPLORERS.splice(0, newTotalWorkers);
+        res.json({ count: EXPLORERS.length });
       } else {
-        let numberOfWorkersToBeCreate = newTotalWorkers - Explorers.length;
+        let numberOfWorkersToBeCreate = newTotalWorkers - EXPLORERS.length;
         for (let i = 0; i < numberOfWorkersToBeCreate; i++) {
           await startWorker();
         }
-        res.json({ active: Explorers.length });
+        res.json({ active: EXPLORERS.length });
       }
     }
   }
   if (req.body.state != undefined) {
-    if (req.body.state && Explorers.length === 0) {
+    if (req.body.state && EXPLORERS.length === 0) {
       startWorker();
     }
     if (!req.body.state) {
-      Explorers = [];
+      EXPLORERS = [];
     }
   }
   let configUpdates = {};
@@ -1011,7 +878,7 @@ app.post("/update", async (req, res) => {
   if (req.body.new_devs_first != undefined) {
     configUpdates.new_apps_first = req.body.new_apps_first;
   }
-  updateWorkersConfig(configUpdates);
+  updateConfig(configUpdates);
 });
 
 app.listen(process.env.PORT||8080, () => {
