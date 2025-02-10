@@ -1,0 +1,269 @@
+2025-02-07T08:36:09.198Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T08:46:32.798Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T09:08:23.546Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T10:28:20.444Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T10:32:59.334Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T11:54:40.559Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T15:14:44.933Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T15:15:02.428Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T15:15:22.578Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T15:51:17.189Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:09:38.058Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:09:53.274Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:09:53.274Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:09:53.274Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:09:53.275Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:10:58.834Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:19:18.670Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:25:33.758Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:27:52.625Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:31:22.059Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:31:30.420Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:31:30.421Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:31:30.456Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:31:30.458Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:35:58.018Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:36:33.779Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:37:32.129Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:42:23.281Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:45:13.493Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:46:48.291Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:49:59.281Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.344Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.344Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.344Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.344Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.344Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:24.817Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:50:25.017Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:52:08.455Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:52:08.456Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:52:09.019Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:52:09.530Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:54:23.126Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:54:23.165Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:54:23.238Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:55:16.813Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:55:16.819Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:55:16.826Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:55:16.830Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:55:16.861Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.678Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.679Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.685Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.685Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.700Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.702Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.713Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:23.733Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:24.345Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T16:57:24.501Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T17:36:01.241Z - ERROR - find old app that is removed : 6446635939 ERROR : BSONOffsetError: Invalid 0x20 type byte. offset: 5669
+2025-02-07T17:42:07.143Z - ERROR - find old app that is removed : 1626949926 ERROR : BSONOffsetError: BSON documents must end in 0x00. offset: 3727
+2025-02-07T17:42:41.129Z - ERROR - find old app that is removed : 6445964529 ERROR : Error: read ECONNRESET
+2025-02-07T17:50:17.884Z - ERROR - find old app that is removed : 1616814625 ERROR : BSONError: bad string length in bson
+2025-02-07T18:25:15.447Z - ERROR - find old app that is removed : 6443579351 ERROR : BSONOffsetError: BSON documents must end in 0x00. offset: 9356
+2025-02-07T18:25:52.607Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T18:27:17.189Z - ERROR - find old app that is removed : 1645416961 ERROR : MongoParseError: Invalid message size: -20606261, too small
+2025-02-07T18:33:05.046Z - ERROR - find old app that is removed : 6469035877 ERROR : BSONOffsetError: BSON documents must end in 0x00. offset: 3972
+2025-02-07T18:33:24.368Z - ERROR - find old app that is removed : 6469039971 ERROR : Error: read ECONNRESET
+2025-02-07T19:52:23.891Z - ERROR - find old app that is removed : 1606012407 ERROR : BSONOffsetError: Invalid 0x34 type byte. offset: 6949
+2025-02-07T19:57:17.454Z - ERROR - find old app that is removed : 1601779106 ERROR : Error: read ECONNRESET
+2025-02-07T20:16:45.895Z - ERROR - find old app that is removed : 1586596140 ERROR : BSONOffsetError: BSON documents must end in 0x00. offset: 12262
+2025-02-07T20:17:08.276Z - ERROR - find old app that is removed : 1596870999 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.073Z - ERROR - find old app that is removed : 1550516996 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.073Z - ERROR - find old app that is removed : 1547645915 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.076Z - ERROR - find old app that is removed : 1552621055 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.076Z - ERROR - find old app that is removed : 1551822961 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.078Z - ERROR - find old app that is removed : 1552641337 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.077Z - ERROR - find old app that is removed : 1547391705 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.078Z - ERROR - find old app that is removed : 1552690632 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.078Z - ERROR - find old app that is removed : 1547282553 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.080Z - ERROR - find old app that is removed : 1549784424 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.081Z - ERROR - find old app that is removed : 1542090352 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.081Z - ERROR - find old app that is removed : 1552316714 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.082Z - ERROR - find old app that is removed : 1548300835 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.083Z - ERROR - find old app that is removed : 1548935823 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.083Z - ERROR - find old app that is removed : 1549541121 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.083Z - ERROR - find old app that is removed : 1551770636 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.168Z - ERROR - find old app that is removed : 1552709872 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.436Z - ERROR - find old app that is removed : 1552413994 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.673Z - ERROR - find old app that is removed : 1552552227 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.877Z - ERROR - find old app that is removed : 1529844252 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:15.922Z - ERROR - find old app that is removed : 1552572204 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.014Z - ERROR - find old app that is removed : 1551922385 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.046Z - ERROR - find old app that is removed : 1552671988 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.257Z - ERROR - find old app that is removed : 1547171898 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.261Z - ERROR - find old app that is removed : 1547167787 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.582Z - ERROR - find old app that is removed : 1545332788 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.582Z - ERROR - find old app that is removed : 1552734638 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.830Z - ERROR - find old app that is removed : 1551532840 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.853Z - ERROR - find old app that is removed : 1552724662 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.866Z - ERROR - find old app that is removed : 1551915455 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:16.908Z - ERROR - find old app that is removed : 1551269755 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:17.258Z - ERROR - find old app that is removed : 1550700280 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:17.608Z - ERROR - find old app that is removed : 1552192208 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:18.071Z - ERROR - find old app that is removed : 1550112891 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:18.235Z - ERROR - find old app that is removed : 1533340750 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:18.405Z - ERROR - find old app that is removed : 1552195984 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:18.538Z - ERROR - find old app that is removed : 1550639868 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:18.758Z - ERROR - find old app that is removed : 1547733947 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:19.653Z - ERROR - find old app that is removed : 1510929311 ERROR : Error: read ECONNRESET
+2025-02-07T23:36:23.272Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.295Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.319Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.326Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.338Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.455Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.456Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.911Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.915Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.917Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.963Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:23.982Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.039Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.536Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.590Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.602Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.602Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.604Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:24.616Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:25.741Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:25.871Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:25.875Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:26.094Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:26.096Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:26.097Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:26.448Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:26.789Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:27.776Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:30.136Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:31.217Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:40.360Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-07T23:36:41.119Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:23:03.301Z - ERROR - find old app that is removed : 1435509604 ERROR : BSONOffsetError: BSON size cannot be negative. offset: 5866
+2025-02-08T23:36:18.269Z - ERROR - find old app that is removed : 1434729544 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.555Z - ERROR - find old app that is removed : 1435094667 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.567Z - ERROR - find old app that is removed : 1435285371 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.673Z - ERROR - find old app that is removed : 1421987111 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.688Z - ERROR - find old app that is removed : 1435639780 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.692Z - ERROR - find old app that is removed : 1410855659 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.708Z - ERROR - find old app that is removed : 1435641808 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.742Z - ERROR - find old app that is removed : 1407104083 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:18.803Z - ERROR - find old app that is removed : 1406896115 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:19.212Z - ERROR - find old app that is removed : 1435034570 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:19.815Z - ERROR - find old app that is removed : 1435350344 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:19.891Z - ERROR - find old app that is removed : 1435034391 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:19.906Z - ERROR - find old app that is removed : 1435286486 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:20.575Z - ERROR - find old app that is removed : 1435463818 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:20.673Z - ERROR - find old app that is removed : 1434664986 ERROR : Error: read ECONNRESET
+2025-02-08T23:36:26.490Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:26.490Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:26.545Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:26.545Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.022Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.023Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.061Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.063Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.074Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.075Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.077Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.083Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.084Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.095Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.097Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.097Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.097Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.174Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.183Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.191Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.247Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.252Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.439Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.446Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:28.778Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:29.360Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:29.494Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:29.548Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:29.911Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-08T23:36:30.316Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:22.504Z - ERROR - find old app that is removed : 1081711473 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:22.654Z - ERROR - find old app that is removed : 6478897410 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:22.883Z - ERROR - find old app that is removed : 1230914086 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:23.305Z - ERROR - find old app that is removed : 955360506 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:23.405Z - ERROR - find old app that is removed : 1127133720 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.358Z - ERROR - find old app that is removed : 1278618960 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.383Z - ERROR - find old app that is removed : 1569125314 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.388Z - ERROR - find old app that is removed : 6483113643 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.390Z - ERROR - find old app that is removed : 6477316695 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.417Z - ERROR - find old app that is removed : 1597773452 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:26.477Z - ERROR - find old app that is removed : 6476109408 ERROR : Error: read ECONNRESET
+2025-02-09T23:36:34.733Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:34.778Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:34.797Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:34.807Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:34.873Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.591Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.592Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.592Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.592Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.607Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.607Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.607Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.608Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.620Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.622Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.623Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.688Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.883Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.938Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.947Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.947Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.955Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.963Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.963Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:35.963Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:36.004Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:36.024Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:36.094Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:36.637Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-09T23:36:36.642Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T08:20:36.307Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T08:40:58.067Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T08:41:21.248Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.523Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.724Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.728Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.728Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.728Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.729Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.735Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.736Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.737Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.753Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.753Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.767Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.776Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.781Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.781Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.781Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.817Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.819Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.877Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.903Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:50.903Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.298Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.299Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.483Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.483Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.483Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.484Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.583Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:57:51.592Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:59:21.538Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T12:59:44.949Z - ERROR - find old app that is removed : 6462232669 ERROR : BSONOffsetError: Invalid 0xca type byte. offset: 5091
+2025-02-10T13:14:21.508Z - ERROR - find old app that is removed : 6450251670 ERROR : BSONError: Invalid UTF-8 string in BSON document
+2025-02-10T13:14:52.662Z - ERROR - find old app that is removed : 6450156370 ERROR : Error: read ECONNRESET
+2025-02-10T14:30:21.101Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T14:31:56.999Z - INFO - 🎉 connection established successfully with mongo db
+2025-02-10T14:38:14.444Z - INFO - 🎉 connection established successfully with mongo db
