@@ -20,7 +20,7 @@ EXPOSE 8080
 
 
 # Start the application
-ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["npm","run", "start"]
 
 #command build
 #docker build -f Dockerfile.run -t user_mobtwin .
