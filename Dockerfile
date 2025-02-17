@@ -20,7 +20,7 @@ EXPOSE 8080
 
 
 # Start the application
-ENTRYPOINT ["npm","run", "start"]
+ENTRYPOINT ["node","TheExplorer.js"]
 
 #command build
 #docker build -f Dockerfile.run -t user_mobtwin .
