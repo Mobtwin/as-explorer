@@ -216,7 +216,7 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
   addProxies(v4proxies, v6proxies).then(setupTheExplorer);
 
   const processApp = (app, today, alreadyUpdated, needToBeUpdated) => {
-    // console.log("processing app : ", app._id);
+    console.log("processing app : ", app._id);
     if (app.updated_at != undefined && app.updated_at > today) {
       alreadyUpdated++;
       STORAGE.APPS_IDS.set(app._id, { value: true, onProcess: false });
