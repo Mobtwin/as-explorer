@@ -5,6 +5,7 @@ import cors from "cors";
 
 import { Config, Ios_Apps, Ios_DEVs } from "./schema.js";
 import { connectToMongoDb } from "./mongodbConnection.js";
+import logger from "./logger.js";
 
 dotenv.config();
 
@@ -45,10 +46,10 @@ const STATS = {
   total_workers: 0,
   start_at: new Date(),
 };
-const BATCH_SIZE = CONFIG?.batch_size || 9000;
-const PARALLEL_FETCHES = 15; // Number of parallel queries
+const BATCH_SIZE = CONFIG?.batch_size || 10;
+const PARALLEL_FETCHES = 1; // Number of parallel queries
 const MAX_RETRIES = 3;
-
+const LIMITED = true;
 let similarAppsWorkerIndexHandler = 0;
 // storage for all workers instances
 let EXPLORERS = [];
@@ -257,11 +258,11 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
         const results = await Promise.all(fetchPromises);
         const apps = results.flat(); // Combine all batches into a single array
 
-        if (apps.length === 0) {
+        if (apps.length === 0 || LIMITED) {
           allBatchesFinished = true;
-          break;
+          // break;
         }
-
+        logger.info("apps: " + JSON.stringify(apps) );
         // 🔹 Process all apps in parallel (faster than `for` loop)
         await Promise.all(
           apps.map((app) =>
