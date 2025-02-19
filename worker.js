@@ -635,6 +635,7 @@ function IOSApp(){
       )) : null;
       // dbApp.updated = app.updated;
       updates.timeLine.updated = app.updated;
+      updates.simpleFields.updated = app.updated;
     }
     if(app.primaryGenre){
       let newType = app.primaryGenre.includes("Games") ? "GAME" : "APP";
