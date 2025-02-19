@@ -248,7 +248,7 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
           fetchPromises.push(
             Ios_Apps.find({
               updated_at: {
-                $gte: ISODate("2025-02-19T15:50:00.000Z")
+                $gte: new Date("2025-02-19T15:50:00.000Z")
               }
             })
               .select("_id updated_at")
