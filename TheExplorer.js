@@ -46,8 +46,8 @@ const STATS = {
   total_workers: 0,
   start_at: new Date(),
 };
-const BATCH_SIZE = CONFIG?.batch_size || 10;
-const PARALLEL_FETCHES = 1; // Number of parallel queries
+const BATCH_SIZE = CONFIG?.batch_size || 9000;
+const PARALLEL_FETCHES = 5; // Number of parallel queries
 const MAX_RETRIES = 3;
 let similarAppsWorkerIndexHandler = 0;
 // storage for all workers instances
@@ -247,13 +247,7 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
         const fetchPromises = [];
         for (let i = 0; i < PARALLEL_FETCHES; i++) {
           fetchPromises.push(
-            Ios_Apps.find({
-              updated_at: {
-                $lt: new Date("2025-02-11T00:00:00.000Z"),
-                $gte: new Date("2025-02-10T12:12:00.000Z"),
-
-              }
-            })
+            Ios_Apps.find()
               .select("_id updated_at")
               .skip((page + i) * BATCH_SIZE)
               .limit(BATCH_SIZE)
@@ -268,7 +262,6 @@ function appStoreExplorer(config, v4proxies, v6proxies) {
           allBatchesFinished = true;
           break;
         }
-        logger.info("apps: " + JSON.stringify(apps) );
         // 🔹 Process all apps in parallel (faster than `for` loop)
         await Promise.all(
           apps.map((app) =>
